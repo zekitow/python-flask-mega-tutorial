@@ -51,16 +51,35 @@ class User(UserMixin, db.Model):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'http://gravatar.com/avatar/{}?d=identicon&size={}'.format(digest, size)
 
+    #
+    # follows the given user
+    #
     def follow(self, user):
         if not self.is_following(user):
             self.followed.append(user)
 
+    #
+    # unfollow the given user
+    #
     def unfollow(self, user):
         if self.is_following(user):
             self.followed.remove(user)
 
+    #
+    # check if one user is following another
+    #
     def is_following(self, user):
         return self.followed.filter(followers.c.followed_id == user.id).count() > 0
+
+    #
+    # fetchs all posts from people who user follows
+    #
+    def followed_posts(self):
+        followed = Post.query.join(
+            followers, (followers.c.followed_id == Post.user_id)
+            ).filter(followers.c.follower_id == self.id)
+
+        return followed.union(self.posts).order_by(Post.timestamp.desc())
 
 @login.user_loader
 def load_user(id):
