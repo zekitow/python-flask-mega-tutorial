@@ -27,7 +27,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('E-mail already taken.')
 
 class ResetPasswordRequestForm(FlaskForm):
-    email = StringField('Email', validators=[Required(), Email()])
+    email  = StringField('Email', validators=[Required(), Email()])
     submit = SubmitField('Request Password Reset')
 
 class ResetPasswordForm(FlaskForm):
