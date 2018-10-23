@@ -74,7 +74,7 @@ msgstr "Acerca de mí"
 msgid "Submit"
 msgstr "Enviar"
 
-#: app/forms.py:66
+#: app/forms.py:55
 msgid "Say something"
 msgstr "Dí algo"
 

@@ -162,7 +162,7 @@ def follow(username):
     user = User.query.filter_by(username=username).first()
 
     if user is None:
-        flash(_('User {} not found'.format(username)))
+        flash(_('User %(username)s not found', username=username))
         return redirect(url_for('index'))
 
     if user == current_user:
@@ -171,7 +171,7 @@ def follow(username):
 
     current_user.follow(user)
     db.session.commit()
-    flash(_('You are now following {}'.format(username)))
+    flash(_('You are now following %(username)s', username=username))
     return redirect(url_for('user', username=username))
 
 @app.route('/unfollow/<username>')
@@ -180,7 +180,7 @@ def unfollow(username):
     user = User.query.filter_by(username=username).first()
 
     if user is None:
-        flash(_('User {} not found'.format(username)))
+        flash(_('User %(username)s not found',username=username))
         return redirect(url_for('index'))
 
     if user == current_user:
@@ -189,5 +189,5 @@ def unfollow(username):
 
     current_user.unfollow(user)
     db.session.commit()
-    flash(_('You are not following {} anymore'.format(username)))
+    flash(_('You are not following %(username)s anymore', username=username))
     return redirect(url_for('user', username=username))
