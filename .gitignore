@@ -4,3 +4,4 @@ __pycache__
 app.db
 logs/*
 !logs/.keep
+.DS_Store

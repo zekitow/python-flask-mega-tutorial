@@ -1,5 +1,6 @@
 from datetime import datetime
-from flask import render_template, flash, redirect, url_for, request, g, jsonify, current_app
+from flask import render_template, flash, redirect, url_for, request, g, \
+    jsonify, current_app
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from guess_language import guess_language
@@ -8,6 +9,7 @@ from app.main.forms import EditProfileForm, PostForm
 from app.models import User, Post
 from app.translate import translate
 from app.main import bp
+
 
 @bp.before_app_request
 def before_request():
@@ -87,7 +89,8 @@ def edit_profile():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', title=_('Edit Profile'), form=form)
+    return render_template('edit_profile.html', title=_('Edit Profile'),
+                           form=form)
 
 
 @bp.route('/follow/<username>')
@@ -128,3 +131,4 @@ def translate_text():
     return jsonify({'text': translate(request.form['text'],
                                       request.form['source_language'],
                                       request.form['dest_language'])})
+

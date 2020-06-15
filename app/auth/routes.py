@@ -4,9 +4,11 @@ from flask_login import login_user, logout_user, current_user
 from flask_babel import _
 from app import db
 from app.auth import bp
-from app.auth.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm
+from app.auth.forms import LoginForm, RegistrationForm, \
+    ResetPasswordRequestForm, ResetPasswordForm
 from app.models import User
 from app.auth.email import send_password_reset_email
+
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -25,10 +27,12 @@ def login():
         return redirect(next_page)
     return render_template('auth/login.html', title=_('Sign In'), form=form)
 
+
 @bp.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
+
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -42,7 +46,9 @@ def register():
         db.session.commit()
         flash(_('Congratulations, you are now a registered user!'))
         return redirect(url_for('auth.login'))
-    return render_template('auth/register.html', title=_('Register'), form=form)
+    return render_template('auth/register.html', title=_('Register'),
+                           form=form)
+
 
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
@@ -53,9 +59,12 @@ def reset_password_request():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             send_password_reset_email(user)
-        flash(_('Check your email for the instructions to reset your password'))
+        flash(
+            _('Check your email for the instructions to reset your password'))
         return redirect(url_for('auth.login'))
-    return render_template('auth/reset_password_request.html', title=_('Reset Password'), form=form)
+    return render_template('auth/reset_password_request.html',
+                           title=_('Reset Password'), form=form)
+
 
 @bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
